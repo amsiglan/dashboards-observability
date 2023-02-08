@@ -285,7 +285,7 @@ export const DataConfigPanelItem = ({
     console.log('newQueryString: ', newQueryString);
     handleQueryChange(newQueryString);
     getVisualizations({
-      query: nextQueryState[FINAL_QUERY],
+      queryState: nextQueryState[FINAL_QUERY],
       callback: (res) => {
         updateVisUIState({
           visData: res,
