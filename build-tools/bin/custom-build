@@ -1,0 +1,12 @@
+#!/bin/bash
+
+set -o errexit
+set -o pipefail
+
+# clean lib dir on every build
+echo "cleanup"
+rm -rf build/*
+
+echo "copy artifacts to build folder"
+mkdir -p build/lib/commonjs/observabilityDashboards/build/plugins
+cp observabilityDashboards-*.zip build/lib/commonjs/observabilityDashboards/build/plugins/observabilityDashboards.zip

@@ -1,0 +1,31 @@
+# -*-perl-*-
+
+package.Insights-Observability-Kibana-Plugin = {
+    interfaces = (opensearch_2.5.0);
+
+    deploy = {
+        generic = true;
+    };
+
+    build-environment = {
+        chroot = basic;
+        network-access = blocked;
+    };
+
+    build-system = custom-build;
+    build-tools = {
+        opensearch_2.5.0 = {
+            BrazilPath = 1.1;
+        };
+    };
+
+    # Use runtime-dependencies for when you want to bring in additional
+    # packages when deploying.
+    # Use dependencies instead if you intend for these dependencies to
+    # be exported to other packages that build against you.
+    dependencies = {
+        opensearch_2.5.0 = {
+        
+        };
+    };
+};
