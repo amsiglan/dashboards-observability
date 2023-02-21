@@ -34,6 +34,10 @@ export const Visualization = ({
 
     if (isEmpty(series)) return [false, VISUALIZATION_ERROR.INVALID_DATA]; // series is required to any visualization type
 
+    // timeseries
+    if (vis.id === VIS_CHART_TYPES.Line && (isEmpty(span) || dimensions.length > 0))
+      return [false, VISUALIZATION_ERROR.INVALID_DATA];
+
     // bars, pie
     if (dimensions.length < 1 && isEmpty(span)) return [false, VISUALIZATION_ERROR.INVALID_DATA];
 
