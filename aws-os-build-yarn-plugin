@@ -35,7 +35,11 @@ if [ $TARGET != "release" ]; then
     exit 1
   fi
   # shellcheck disable=SC2006
-  EXPECTED_NODE_VERSION=`sed 's/.*"node": "^\(.*\)".*/\1/;t;d' ../../package.json`
+  
+    if [ -z $EXPECTED_NODE_VERSION ]; then
+        EXPECTED_NODE_VERSION=`sed 's/.*"node": "^\(.*\)".*/\1/;t;d' ../../package.json`
+    fi
+    
   EXPECTED_NODE_VERSION="v$EXPECTED_NODE_VERSION"
 fi
 echo "EXPECTED_NODE_VERSION: $EXPECTED_NODE_VERSION"
