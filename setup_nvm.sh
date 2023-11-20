@@ -28,7 +28,8 @@ if [ -z "$PACKAGE_ROOT" ]; then
 fi
 
 # shellcheck disable=SC2034
-NVM_PATH="/local/nvm"
+NVM_PATH=$HOME
+echo "NVM PATH : $NVM_PATH"
 # shellcheck disable=SC2034
 # shellcheck disable=SC2006
 NVM_VERSION=`nvm --version 2> /dev/null`

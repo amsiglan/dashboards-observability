@@ -65,10 +65,15 @@ cd "$PACKAGE_ROOT"
 
 if [ $TARGET != "release" ]; then
   # Setup NVM
-  export HOME="/local/nvm"
+  # exposing this variable will help AutoSync control the nvm installation path
+  if [ ! -z "$NVM_HOME" ]; then
+    export HOME="$NVM_HOME"
+  else
+    export HOME="/local/nvm"
+  fi
   echo "Calling setup_nvm.sh"
   ./setup_nvm.sh $EXPECTED_NVM_VERSION $EXPECTED_NODE_VERSION
-  source /local/nvm/.zshrc
+  source $NVM_HOME/.zshrc
   # shellcheck disable=SC2006
   echo "NVM Version: `nvm --version 2>/dev/null`"
   # shellcheck disable=SC2006
