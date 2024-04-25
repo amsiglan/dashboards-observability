@@ -73,7 +73,7 @@ if [ $TARGET != "release" ]; then
   fi
   echo "Calling setup_nvm.sh"
   ./setup_nvm.sh $EXPECTED_NVM_VERSION $EXPECTED_NODE_VERSION
-  source $NVM_HOME/.zshrc
+  source ~/.zshrc
   # shellcheck disable=SC2006
   echo "NVM Version: `nvm --version 2>/dev/null`"
   # shellcheck disable=SC2006
