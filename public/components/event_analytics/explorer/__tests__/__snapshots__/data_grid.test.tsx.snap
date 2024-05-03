@@ -137,9 +137,7 @@ exports[`Datagrid component Renders data grid component 1`] = `
         },
         "basePath": BasePath {
           "basePath": "",
-          "clientBasePath": "",
           "get": [Function],
-          "getBasePath": [Function],
           "prepend": [Function],
           "remove": [Function],
           "serverBasePath": "",
@@ -167,9 +165,7 @@ exports[`Datagrid component Renders data grid component 1`] = `
           },
           "basePath": BasePath {
             "basePath": "",
-            "clientBasePath": "",
             "get": [Function],
-            "getBasePath": [Function],
             "prepend": [Function],
             "remove": [Function],
             "serverBasePath": "",
@@ -627,9 +623,7 @@ exports[`Datagrid component renders data grid with different timestamp 1`] = `
         },
         "basePath": BasePath {
           "basePath": "",
-          "clientBasePath": "",
           "get": [Function],
-          "getBasePath": [Function],
           "prepend": [Function],
           "remove": [Function],
           "serverBasePath": "",
@@ -657,9 +651,7 @@ exports[`Datagrid component renders data grid with different timestamp 1`] = `
           },
           "basePath": BasePath {
             "basePath": "",
-            "clientBasePath": "",
             "get": [Function],
-            "getBasePath": [Function],
             "prepend": [Function],
             "remove": [Function],
             "serverBasePath": "",
@@ -1117,9 +1109,7 @@ exports[`Datagrid component renders data grid with no timestamp 1`] = `
         },
         "basePath": BasePath {
           "basePath": "",
-          "clientBasePath": "",
           "get": [Function],
-          "getBasePath": [Function],
           "prepend": [Function],
           "remove": [Function],
           "serverBasePath": "",
@@ -1147,9 +1137,7 @@ exports[`Datagrid component renders data grid with no timestamp 1`] = `
           },
           "basePath": BasePath {
             "basePath": "",
-            "clientBasePath": "",
             "get": [Function],
-            "getBasePath": [Function],
             "prepend": [Function],
             "remove": [Function],
             "serverBasePath": "",
