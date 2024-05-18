@@ -15,6 +15,7 @@ import {
 } from '../../../../src/core/public';
 import { DashboardStart } from '../../../../src/plugins/dashboard/public';
 import PPLService from '../services/requests/ppl';
+import { DataSourceStart } from '../../../../src/plugins/data/public/data_sources/datasource_services/types';
 
 class CoreRefs {
   private static _instance: CoreRefs;
@@ -32,6 +33,7 @@ class CoreRefs {
   public dashboard?: DashboardStart;
   public dashboardProviders?: unknown;
   public overlays?: OverlayStart;
+  public dataSources?: DataSourceStart;
   private constructor() {
     // ...
   }

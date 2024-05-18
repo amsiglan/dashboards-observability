@@ -9,7 +9,6 @@ import { LogExplorerRouterContext } from '../..';
 import {
   DataSourceGroup,
   DataSourceSelectable,
-  DataSourceType,
 } from '../../../../../../../src/plugins/data/public';
 import {
   DATA_SOURCE_NAME_URL_PARAM_KEY,
@@ -96,7 +95,7 @@ export const DataSourceSelection = ({ tabId }: { tabId: string }) => {
   const dispatch = useDispatch();
   const routerContext = useContext(LogExplorerRouterContext);
   const explorerSearchMetadata = useSelector(selectSearchMetaData)[tabId];
-  const [activeDataSources, setActiveDataSources] = useState<DataSourceType[]>([]);
+  const [activeDataSources, setActiveDataSources] = useState<DataSource[]>([]);
   const [dataSourceOptionList, setDataSourceOptionList] = useState<DataSourceGroup[]>([]);
   const [selectedSources, setSelectedSources] = useState<SelectedDataSource[]>(
     getDataSourceState(explorerSearchMetadata.datasources)
