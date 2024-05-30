@@ -94,7 +94,7 @@ export const TablesFlyout = ({ dataSourceName, resetFlyout }: TablesFlyoutProps)
           datasourceCache.status === CachedDataSourceStatus.Failed) &&
         !isCatalogCacheFetching(databasesLoadStatus)
       ) {
-        startLoadingDatabases({ dataSourceName });
+        startLoadingDatabases(dataSourceName);
       } else if (datasourceCache.status === CachedDataSourceStatus.Updated) {
         setCachedDatabases(datasourceCache.databases);
         setIsFirstTimeLoading(false);
@@ -140,7 +140,7 @@ export const TablesFlyout = ({ dataSourceName, resetFlyout }: TablesFlyoutProps)
           databaseCache.status === CachedDataSourceStatus.Failed) &&
         !isCatalogCacheFetching(tablesLoadStatus)
       ) {
-        startLoadingTables({ dataSourceName, databaseName: selectedDatabase });
+        startLoadingTables(dataSourceName, selectedDatabase );
         setIsObjectsLoading(true);
       } else if (databaseCache.status === CachedDataSourceStatus.Updated) {
         setCachedTables(databaseCache.tables);
