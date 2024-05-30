@@ -53,6 +53,7 @@ interface DataSourceSelectorProps {
   selectedDatasource: string;
   dataSourcesPreselected: boolean;
   tableFieldsLoading: boolean;
+  hideHeader?: boolean;
 }
 
 export const DataSourceSelector: React.FC<DataSourceSelectorProps> = ({
@@ -61,6 +62,7 @@ export const DataSourceSelector: React.FC<DataSourceSelectorProps> = ({
   selectedDatasource,
   dataSourcesPreselected,
   tableFieldsLoading,
+  hideHeader,
 }) => {
   const { setToast } = useToast();
   const [databases, setDatabases] = useState<Array<EuiComboBoxOptionOption<string>>>([]);
@@ -168,15 +170,19 @@ export const DataSourceSelector: React.FC<DataSourceSelectorProps> = ({
 
   return (
     <>
-      <EuiText data-test-subj="datasource-selector-header">
-        <h3>Select data source</h3>
-      </EuiText>
-      <EuiSpacer size="s" />
-      <EuiText size="s" color="subdued">
-        Select the data source to accelerate data from. External data sources may take time to load.
-      </EuiText>
-      <EuiSpacer size="m" />
-
+      {!hideHeader && (
+        <>
+          <EuiText data-test-subj="datasource-selector-header">
+            <h3>Select data source</h3>
+          </EuiText>
+          <EuiSpacer size="s" />
+          <EuiText size="s" color="subdued">
+            Select the data source to accelerate data from. External data sources may take time to
+            load.
+          </EuiText>
+          <EuiSpacer size="m" />
+        </>
+      )}
       {dataSourcesPreselected ? (
         <>
           <EuiFlexGroup>
