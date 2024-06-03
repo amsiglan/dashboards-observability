@@ -232,6 +232,7 @@ export const CreateAcceleration = ({
                 setDataSourceFormData: setAccelerationFormData,
               }}
               selectedDatasource={selectedDatasource}
+              selectedDataSourceType={isS3ConnectionWithLakeFormation ? 'SecurityLake' : 'Other'}
               dataSourcesPreselected={dataSourcesPreselected}
               tableFieldsLoading={tableFieldsLoading}
             />

@@ -244,3 +244,5 @@ export interface LoadCachehookOutput {
   startLoading: (dataSourceName: string, databaseName?: string, tableName?: string) => void;
   stopLoading: () => void;
 }
+
+export type ObjectLoaderDataSourceType = 'SecurityLake' | 'Other';

@@ -62,6 +62,7 @@ import {
 } from '../../../../common/constants/explorer';
 import { QUERY_ASSIST_API } from '../../../../common/constants/query_assist';
 import {
+  DATACONNECTIONS_BASE,
   LIVE_END_TIME,
   LIVE_OPTIONS,
   PPL_DESCRIBE_INDEX_REGEX,
@@ -138,6 +139,8 @@ import {
   getRenderLogExplorerTablesFlyout,
 } from '../../../plugin';
 import { AccelerateCallout } from './accelerate_callout';
+import { checkIsConnectionWithLakeFormation } from '../../datasources/utils/helpers';
+import { ObjectLoaderDataSourceType } from '../../../../common/types/data_connections';
 
 export const Explorer = ({
   pplService,
@@ -209,6 +212,7 @@ export const Explorer = ({
   const [liveTimestamp, setLiveTimestamp] = useState(DATE_PICKER_FORMAT);
   const [triggerAvailability, setTriggerAvailability] = useState(false);
   const [isQueryRunning, setIsQueryRunning] = useState(false);
+  const [objectLoaderDataSourceType, setObjectLoaderDataSourceType] = useState<ObjectLoaderDataSourceType>('Other');
   const dataSourceName = explorerSearchMeta?.datasources[0]?.label;
   const renderTablesFlyout = getRenderLogExplorerTablesFlyout();
   const renderCreateAccelerationFlyout = getRenderCreateAccelerationFlyout();
@@ -341,6 +345,18 @@ export const Explorer = ({
         });
     }
   }, []);
+
+  const updateDataSourceConnectionInfo = () => {
+    coreRefs.http!.get(`${DATACONNECTIONS_BASE}/${dataSourceName}`).then((data: any) => {
+      setObjectLoaderDataSourceType(
+        checkIsConnectionWithLakeFormation(data) ? 'SecurityLake' : 'Other'
+      );
+    });
+  };
+
+  useEffect(() => {
+    updateDataSourceConnectionInfo();
+  }, [dataSourceName]);
 
   const getErrorHandler = (title: string) => {
     return (error: any) => {
@@ -691,7 +707,7 @@ export const Explorer = ({
             </EuiFlexItem>
           </EuiFlexGroup>
         ) : (
-          <NoResults tabId={tabId} />
+          <NoResults tabId={tabId} objectLoaderDataSourceType={objectLoaderDataSourceType} />
         )}
       </div>
     );
@@ -1079,7 +1095,7 @@ export const Explorer = ({
                     <EuiLink
                       style={{ paddingLeft: 130 }}
                       onClick={() => {
-                        renderTablesFlyout(dataSourceName);
+                        renderTablesFlyout(dataSourceName, objectLoaderDataSourceType);
                       }}
                     >
                       View databases and tables
