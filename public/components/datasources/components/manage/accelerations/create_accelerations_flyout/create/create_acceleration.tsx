@@ -65,7 +65,7 @@ export const CreateAcceleration = ({
     database: databaseName ?? '',
     dataTable: tableName ?? '',
     dataTableFields: [],
-    accelerationIndexType: 'skipping',
+    accelerationIndexType: selectedDatasourceType === 'SECURITYLAKE' ? 'materialized' : 'skipping',
     skippingIndexQueryData: [],
     coveringIndexQueryData: [],
     materializedViewQueryData: {
