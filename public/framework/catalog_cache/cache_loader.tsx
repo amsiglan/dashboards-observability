@@ -11,12 +11,12 @@ import {
 } from '../../../common/constants/data_sources';
 import {
   AsyncPollingResult,
-  CachedAccelerations,
+  CachedAcceleration,
   CachedColumn,
   CachedDataSourceStatus,
   CachedTable,
+  DatasourceType,
   LoadCacheType,
-  ObjectLoaderDataSourceType,
 } from '../../../common/types/data_connections';
 import { DirectQueryLoadingStatus, DirectQueryRequest } from '../../../common/types/explorer';
 import { getAsyncSessionId, setAsyncSessionId } from '../../../common/utils/query_session_utils';
@@ -119,7 +119,7 @@ export const updateAccelerationsToCache = (
 
   const combinedData = combineSchemaAndDatarows(pollingResult.schema, pollingResult.datarows);
 
-  const newAccelerations: CachedAccelerations[] = combinedData.map((row: any) => ({
+  const newAccelerations: CachedAcceleration[] = combinedData.map((row: any) => ({
     flintIndexName: row.flint_index_name,
     type: row.kind === 'mv' ? 'materialized' : row.kind,
     database: row.database,
@@ -212,7 +212,7 @@ export const createLoadQuery = (
   dataSourceName: string,
   databaseName?: string,
   tableName?: string,
-  dataSourceType?: ObjectLoaderDataSourceType
+  dataSourceType?: DatasourceType
 ) => {
   let query;
   switch (loadCacheType) {
@@ -220,7 +220,8 @@ export const createLoadQuery = (
       query = `SHOW SCHEMAS IN ${addBackticksIfNeeded(dataSourceName)}`;
       break;
     case 'tables':
-      const showTableQueryBase = dataSourceType === 'SecurityLake' ? 'SHOW TABLE' : 'SHOW TABLE EXTENDED';
+      const showTableQueryBase =
+        dataSourceType?.toLowerCase() === 'securitylake' ? 'SHOW TABLES' : 'SHOW TABLE EXTENDED';
       query = `${showTableQueryBase} IN ${addBackticksIfNeeded(
         dataSourceName
       )}.${addBackticksIfNeeded(databaseName!)} LIKE '*'`;
@@ -270,7 +271,7 @@ export const useLoadToCache = (loadCacheType: LoadCacheType) => {
     );
   };
 
-  const startLoading = (dataSourceName: string, databaseName?: string, tableName?: string, dataSourceType?: ObjectLoaderDataSourceType) => {
+  const startLoading = (dataSourceName: string, databaseName?: string, tableName?: string, dataSourceType?: DatasourceType) => {
     setLoadStatus(DirectQueryLoadingStatus.SCHEDULED);
     setCurrentDataSourceName(dataSourceName);
     setCurrentDatabaseName(databaseName);

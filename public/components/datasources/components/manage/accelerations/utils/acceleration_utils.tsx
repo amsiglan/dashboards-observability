@@ -5,7 +5,7 @@
 
 import React from 'react';
 import { EuiButton, EuiHealth } from '@elastic/eui';
-import { CachedAcceleration } from '../../../../../../../common/types/data_connections';
+import { CachedAcceleration, DatasourceType } from '../../../../../../../common/types/data_connections';
 import {
   redirectToExplorerOSIdx,
   redirectToExplorerWithDataSrc,
@@ -87,12 +87,15 @@ export const generateAccelerationOperationQuery = (
 
 export const CreateAccelerationFlyoutButton = ({
   dataSourceName,
+  dataSourceType,
   renderCreateAccelerationFlyout,
   handleRefresh,
 }: {
   dataSourceName: string;
+  dataSourceType: DatasourceType;
   renderCreateAccelerationFlyout: (
     dataSource: string,
+    dataSourceType: DatasourceType,
     databaseName?: string,
     tableName?: string,
     handleRefresh?: () => void
@@ -103,7 +106,7 @@ export const CreateAccelerationFlyoutButton = ({
     <>
       <EuiButton
         onClick={() =>
-          renderCreateAccelerationFlyout(dataSourceName, undefined, undefined, handleRefresh)
+          renderCreateAccelerationFlyout(dataSourceName, dataSourceType, undefined, undefined, handleRefresh)
         }
         fill
       >

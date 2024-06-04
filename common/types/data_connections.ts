@@ -47,12 +47,11 @@ export interface AssociatedObject {
 
 export type Role = EuiComboBoxOptionOption;
 
-export type DatasourceType = 'S3GLUE' | 'PROMETHEUS';
+export type DatasourceType = 'S3GLUE' | 'PROMETHEUS' | 'SECURITYLAKE';
 
 export interface S3GlueProperties {
   'glue.indexstore.opensearch.uri': string;
   'glue.indexstore.opensearch.region': string;
-  'glue.lakeformation.enabled'?: boolean;
 }
 
 export interface PrometheusProperties {
@@ -244,5 +243,3 @@ export interface LoadCachehookOutput {
   startLoading: (dataSourceName: string, databaseName?: string, tableName?: string) => void;
   stopLoading: () => void;
 }
-
-export type ObjectLoaderDataSourceType = 'SecurityLake' | 'Other';

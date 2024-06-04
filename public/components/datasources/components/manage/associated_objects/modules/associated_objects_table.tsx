@@ -15,6 +15,7 @@ import { i18n } from '@osd/i18n';
 import {
   AssociatedObject,
   CachedAcceleration,
+  DatasourceType,
 } from '../../../../../../../common/types/data_connections';
 import {
   getRenderAccelerationDetailsFlyout,
@@ -37,9 +38,9 @@ import {
 
 interface AssociatedObjectsTableProps {
   datasourceName: string;
+  dataSourceType: DatasourceType;
   associatedObjects: AssociatedObject[];
   cachedAccelerations: CachedAcceleration[];
-  isS3ConnectionWithLakeFormation: boolean;
   handleRefresh: () => void;
 }
 
@@ -57,9 +58,9 @@ interface AssociatedTableFilter {
 
 export const AssociatedObjectsTable = ({
   datasourceName,
+  dataSourceType,
   associatedObjects,
   cachedAccelerations,
-  isS3ConnectionWithLakeFormation,
   handleRefresh,
 }: AssociatedObjectsTableProps) => {
   const [accelerationFilterOptions, setAccelerationFilterOptions] = useState<FilterOption[]>([]);
@@ -69,7 +70,7 @@ export const AssociatedObjectsTable = ({
     {
       field: 'name',
       name: i18n.translate('datasources.associatedObjectsTab.column.name', {
-        defaultMessage: isS3ConnectionWithLakeFormation ? 'Table' : 'Name',
+        defaultMessage: dataSourceType === 'SECURITYLAKE' ? 'Table' : 'Name',
       }),
       sortable: true,
       'data-test-subj': 'nameCell',
@@ -80,8 +81,8 @@ export const AssociatedObjectsTable = ({
               renderAssociatedObjectsDetailsFlyout(
                 item,
                 datasourceName,
-                handleRefresh,
-                isS3ConnectionWithLakeFormation
+                dataSourceType,
+                handleRefresh
               );
             } else {
               const acceleration = cachedAccelerations.find((acc) => acc.indexName === item.id);
@@ -98,7 +99,7 @@ export const AssociatedObjectsTable = ({
     {
       field: 'accelerations',
       name: i18n.translate('datasources.associatedObjectsTab.column.accelerations', {
-        defaultMessage: isS3ConnectionWithLakeFormation ? 'Accelerations' : 'Associations',
+        defaultMessage: dataSourceType === 'SECURITYLAKE' ? 'Accelerations' : 'Associations',
       }),
       sortable: true,
       render: (accelerations: CachedAcceleration[] | AssociatedObject, obj: AssociatedObject) => {
@@ -123,8 +124,8 @@ export const AssociatedObjectsTable = ({
                 renderAssociatedObjectsDetailsFlyout(
                   obj,
                   datasourceName,
-                  handleRefresh,
-                  isS3ConnectionWithLakeFormation
+                  dataSourceType,
+                  handleRefresh
                 )
               }
             >
@@ -138,8 +139,8 @@ export const AssociatedObjectsTable = ({
                 renderAssociatedObjectsDetailsFlyout(
                   accelerations,
                   datasourceName,
-                  handleRefresh,
-                  isS3ConnectionWithLakeFormation
+                  dataSourceType,
+                  handleRefresh
                 )
               }
             >
@@ -168,7 +169,7 @@ export const AssociatedObjectsTable = ({
           icon: 'bolt',
           available: (item: AssociatedObject) => item.type === 'table',
           onClick: (item: AssociatedObject) =>
-            renderCreateAccelerationFlyout(datasourceName, item.database, item.name, handleRefresh),
+            renderCreateAccelerationFlyout(datasourceName, dataSourceType, item.database, item.name, handleRefresh),
         },
         {
           name: i18n.translate('datasources.associatedObjectsTab.action.discover.name', {
@@ -203,7 +204,7 @@ export const AssociatedObjectsTable = ({
     },
   ] as Array<EuiTableFieldDataColumnType<AssociatedObject>>;
 
-  if (!isS3ConnectionWithLakeFormation) {
+  if (dataSourceType !== 'SECURITYLAKE') {
     columns.splice(1, 0, {
       field: 'type',
       name: i18n.translate('datasources.associatedObjectsTab.column.type', {
@@ -263,9 +264,10 @@ export const AssociatedObjectsTable = ({
     filters: searchFilters,
     box: {
       incremental: true,
-      placeholder: isS3ConnectionWithLakeFormation
-        ? ASSC_OBJ_TABLE_FOR_S3_WITH_LAKE_FORMATION_SEARCH_HINT
-        : ASSC_OBJ_TABLE_SEARCH_HINT,
+      placeholder:
+        dataSourceType === 'SECURITYLAKE'
+          ? ASSC_OBJ_TABLE_FOR_S3_WITH_LAKE_FORMATION_SEARCH_HINT
+          : ASSC_OBJ_TABLE_SEARCH_HINT,
       schema: {
         fields: { name: { type: 'string' }, database: { type: 'string' } },
       },

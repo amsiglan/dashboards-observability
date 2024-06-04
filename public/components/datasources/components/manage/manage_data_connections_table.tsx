@@ -39,13 +39,11 @@ import { DataConnectionsDescription } from './manage_data_connections_descriptio
 import { getRenderCreateAccelerationFlyout } from '../../../../../public/plugin';
 import { InstallIntegrationFlyout } from './integrations/installed_integrations_table';
 import { redirectToExplorerS3 } from './associated_objects/utils/associated_objects_tab_utils';
-import { checkIsConnectionWithLakeFormation } from '../../utils/helpers';
 
 interface DataConnection {
   connectionType: DatasourceType;
   name: string;
   dsStatus: DatasourceStatus;
-  isConnectionWithLakeFormation: boolean;
 }
 
 export const ManageDataConnectionsTable = (props: HomeProps) => {
@@ -70,7 +68,6 @@ export const ManageDataConnectionsTable = (props: HomeProps) => {
               name,
               connectionType: connector,
               dsStatus: status,
-              isConnectionWithLakeFormation: checkIsConnectionWithLakeFormation(dataSourceDetails),
             };
           }
         );
@@ -108,7 +105,7 @@ export const ManageDataConnectionsTable = (props: HomeProps) => {
       onClick: (datasource: DataConnection) => {
         if (datasource.connectionType === 'PROMETHEUS') {
           application!.navigateToApp(observabilityMetricsID);
-        } else if (datasource.connectionType === 'S3GLUE') {
+        } else if (['S3GLUE', 'SECURITYLAKE'].includes(datasource.connectionType)) {
           redirectToExplorerS3(datasource.name);
         }
       },
@@ -121,7 +118,7 @@ export const ManageDataConnectionsTable = (props: HomeProps) => {
       type: 'icon',
       available: (datasource: DataConnection) => datasource.connectionType !== 'PROMETHEUS',
       onClick: (datasource: DataConnection) => {
-        renderCreateAccelerationFlyout(datasource.name);
+        renderCreateAccelerationFlyout(datasource.name, datasource.connectionType);
       },
       'data-test-subj': 'action-accelerate',
     },
@@ -137,7 +134,6 @@ export const ManageDataConnectionsTable = (props: HomeProps) => {
             closeFlyout={() => setShowIntegrationsFlyout(false)}
             datasourceType={datasource.connectionType}
             datasourceName={datasource.name}
-            isS3ConnectionWithLakeFormation={datasource.isConnectionWithLakeFormation}
           />
         );
         setShowIntegrationsFlyout(true);
@@ -148,8 +144,10 @@ export const ManageDataConnectionsTable = (props: HomeProps) => {
 
   const icon = (record: DataConnection) => {
     switch (record.connectionType) {
+      case 'SECURITYLAKE':
+        return <EuiIcon type={SecurityLakeLogo} />;
       case 'S3GLUE':
-        return <EuiIcon type={record.isConnectionWithLakeFormation ? SecurityLakeLogo : S3Logo} />;
+        return <EuiIcon type={S3Logo} />;
       case 'PROMETHEUS':
         return <EuiIcon type={PrometheusLogo} />;
       default:
@@ -184,9 +182,9 @@ export const ManageDataConnectionsTable = (props: HomeProps) => {
           case 'PROMETHEUS':
             return 'Prometheus';
           case 'S3GLUE':
-            return connection.isConnectionWithLakeFormation
-              ? 'Amazon Security Lake'
-              : 'Amazon S3 with AWS Glue Data Catalog';
+            return 'Amazon S3 with AWS Glue Data Catalog';
+          case 'SECURITYLAKE':
+            return 'Amazon Security Lake';
           default:
             return '-';
         }
@@ -217,17 +215,14 @@ export const ManageDataConnectionsTable = (props: HomeProps) => {
     },
   };
 
-  const entries = data.map(
-    ({ name, connectionType, dsStatus, isConnectionWithLakeFormation }: DataConnection) => {
-      return {
-        connectionType,
-        name,
-        dsStatus,
-        data: { name, connectionType },
-        isConnectionWithLakeFormation,
-      };
-    }
-  );
+  const entries = data.map(({ name, connectionType, dsStatus }: DataConnection) => {
+    return {
+      connectionType,
+      name,
+      dsStatus,
+      data: { name, connectionType },
+    };
+  });
 
   const renderCreateAccelerationFlyout = getRenderCreateAccelerationFlyout();
 

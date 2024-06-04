@@ -49,7 +49,7 @@ import {
   S3_DATASOURCE_TYPE,
 } from '../common/constants/shared';
 import { QueryManager } from '../common/query_manager';
-import { AssociatedObject, CachedAcceleration, ObjectLoaderDataSourceType } from '../common/types/data_connections';
+import { AssociatedObject, CachedAcceleration, DatasourceType } from '../common/types/data_connections';
 import { VISUALIZATION_SAVED_OBJECT } from '../common/types/observability_saved_object_attributes';
 import {
   setOSDHttp,
@@ -120,8 +120,8 @@ export const [
   (
     tableDetail: AssociatedObject,
     datasourceName: string,
-    handleRefresh?: () => void,
-    isS3ConnectionWithLakeFormation?: boolean
+    dataSourceType: DatasourceType,
+    handleRefresh?: () => void
   ) => void
 >('renderAssociatedObjectsDetailsFlyout');
 
@@ -131,6 +131,7 @@ export const [
 ] = createGetterSetter<
   (
     dataSource: string,
+    dataSourceType: DatasourceType,
     databaseName?: string,
     tableName?: string,
     handleRefresh?: () => void
@@ -140,7 +141,9 @@ export const [
 export const [
   getRenderLogExplorerTablesFlyout,
   setRenderLogExplorerTablesFlyout,
-] = createGetterSetter<(dataSourceName: string, dataSourceType: ObjectLoaderDataSourceType) => void>('renderLogExplorerTablesFlyout');
+] = createGetterSetter<(dataSourceName: string, dataSourceType: DatasourceType) => void>(
+  'renderLogExplorerTablesFlyout'
+);
 
 export class ObservabilityPlugin
   implements
@@ -458,8 +461,8 @@ export class ObservabilityPlugin
     const renderAssociatedObjectsDetailsFlyout = (
       tableDetail: AssociatedObject,
       datasourceName: string,
-      handleRefresh?: () => void,
-      isS3ConnectionWithLakeFormation?: boolean
+      dataSourceType: DatasourceType,
+      handleRefresh?: () => void
     ) => {
       const associatedObjectsDetailsFlyout = core.overlays.openFlyout(
         toMountPoint(
@@ -468,7 +471,7 @@ export class ObservabilityPlugin
             datasourceName={datasourceName}
             resetFlyout={() => associatedObjectsDetailsFlyout.close()}
             handleRefresh={handleRefresh}
-            isS3ConnectionWithLakeFormation={isS3ConnectionWithLakeFormation}
+            dataSourceType={dataSourceType}
           />
         )
       );
@@ -477,6 +480,7 @@ export class ObservabilityPlugin
 
     const renderCreateAccelerationFlyout = (
       selectedDatasource: string,
+      dataSourceType: DatasourceType,
       databaseName?: string,
       tableName?: string,
       handleRefresh?: () => void
@@ -485,6 +489,7 @@ export class ObservabilityPlugin
         toMountPoint(
           <CreateAcceleration
             selectedDatasource={selectedDatasource}
+            selectedDatasourceType={dataSourceType}
             resetFlyout={() => createAccelerationFlyout.close()}
             databaseName={databaseName}
             tableName={tableName}
@@ -495,7 +500,10 @@ export class ObservabilityPlugin
     };
     setRenderCreateAccelerationFlyout(renderCreateAccelerationFlyout);
 
-    const renderLogExplorerTablesFlyout = (dataSourceName: string, dataSourceType: ObjectLoaderDataSourceType) => {
+    const renderLogExplorerTablesFlyout = (
+      dataSourceName: string,
+      dataSourceType: DatasourceType
+    ) => {
       const createLogExplorerTablesFlyout = core.overlays.openFlyout(
         toMountPoint(
           <TablesFlyout
