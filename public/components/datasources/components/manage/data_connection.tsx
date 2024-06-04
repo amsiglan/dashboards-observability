@@ -29,8 +29,8 @@ import {
 } from '../../../../../common/constants/shared';
 import {
   DatasourceDetails,
+  DatasourceType,
   PrometheusProperties,
-  StartLoadingParams,
 } from '../../../../../common/types/data_connections';
 import {
   useLoadAccelerationsToCache,
@@ -82,11 +82,8 @@ export const DataConnection = (props: { dataSource: string }) => {
     databasesLoadStatus,
     startLoadingDatabases,
     tablesLoadStatus,
-    startLoadingTables: (loadingParams: StartLoadingParams) => {
-      startLoadingTables({
-        ...loadingParams,
-        dataSourceType: datasourceDetails.connector,
-      });
+    startLoadingTables: (dataSourceName: string, databaseName?: string, tableName?: string, dataSourceType?: DatasourceType) => {
+      startLoadingTables(dataSourceName, databaseName, tableName, dataSourceType ?? datasourceDetails.connector);
     },
     accelerationsLoadStatus,
     startLoadingAccelerations,

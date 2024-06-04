@@ -14,6 +14,7 @@ import { VisualizationsSetup } from '../../../src/plugins/visualizations/public'
 import {
   AssociatedObject,
   CachedAcceleration,
+  DatasourceType,
   LoadCachehookOutput,
 } from '../common/types/data_connections';
 import { CatalogCacheManager } from './framework/catalog_cache/cache_manager';
@@ -49,10 +50,12 @@ export interface ObservabilityStart {
   renderAssociatedObjectsDetailsFlyout: (
     tableDetail: AssociatedObject,
     datasourceName: string,
+    dataSourceType: DatasourceType,
     handleRefresh?: () => void
   ) => void;
   renderCreateAccelerationFlyout: (
     dataSource: string,
+    dataSourceType: DatasourceType,
     databaseName?: string,
     tableName?: string,
     handleRefresh?: () => void
