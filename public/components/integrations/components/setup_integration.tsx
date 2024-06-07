@@ -159,7 +159,7 @@ const addIntegration = async ({
     if (!res) {
       setLoading(false);
     }
-  } else if (config.connectionType === 's3') {
+  } else if (config.connectionType === 's3' || config.connectionType === 'securityLake') {
     const http = coreRefs.http!;
 
     const assets: { data: ParsedIntegrationAsset[] } = await http.get(
@@ -219,6 +219,14 @@ const isConfigValid = (config: IntegrationSetupInputs, integration: IntegrationC
     }
     return (
       config.connectionLocation.startsWith('s3://') && config.checkpointLocation.startsWith('s3://')
+    );
+  }
+  if (config.connectionType === 'securityLake') {
+    if (integration.workflows && config.enabledWorkflows.length < 1) {
+      return false;
+    }
+    return (
+      config.checkpointLocation.startsWith('s3://')
     );
   }
   return true;
