@@ -5,7 +5,7 @@
   "description": "Monitor IP traffic with VPC Flow Logs.",
   "license": "Apache-2.0",
   "type": "logs_vpc",
-  "labels": ["Observability", "Logs", "AWS", "Cloud", "Flint S3"],
+  "labels": ["Security Lake", "Observability", "Logs", "AWS", "Cloud", "Flint S3"],
   "author": "Haidong Wang",
   "sourceUrl": "https://github.com/opensearch-project/dashboards-observability/tree/main/server/adaptors/integrations/__data__/repository/aws_vpc_flow/info",
   "workflows": [
@@ -38,6 +38,18 @@
       "label": "Refreshing and populate the pre-aggregated projections ",
       "description": "This step populate the pre-aggregated projections by enabling the REFRESH command to run, this step depends on selection of the previous `flint-pre-agg-dashboards` step",
       "enabled_by_default": false
+    },
+    {
+      "name": "queries-security-lake",
+      "label": "Queries (recommended)",
+      "description": "Tables and pre-written queries for quickly getting insights on your data.",
+      "enabled_by_default": true
+    },
+    {
+      "name": "dashboards-security-lake",
+      "label": "Dashboards & Visualizations",
+      "description": "Dashboards and indices that enable you to easily visualize important metrics.",
+      "enabled_by_default": true
     }
   ],
   "statics": {
@@ -179,6 +191,20 @@
       "extension": "sql",
       "type": "query",
       "workflows": ["flint-pre-agg-refresh"]
+    },
+    {
+      "name": "aws_vpc_mv_schema_security_lake_2_0",
+      "version": "1.0.0",
+      "extension": "sql",
+      "type": "query",
+      "workflows": ["dashboards-security-lake"]
+    },
+    {
+      "name": "aws_vpc_flow_security_lake_2_0",
+      "version": "1.0.0",
+      "extension": "ndjson",
+      "type": "savedObjectBundle",
+      "workflows": ["dashboards-security-lake"]
     }
   ],
   "sampleData": {

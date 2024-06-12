@@ -16,10 +16,22 @@
       "enabled_by_default": true
     },
     {
+      "name": "queries-security-lake",
+      "label": "Queries (recommended)",
+      "description": "Tables and pre-written queries for quickly getting insights on your data.",
+      "enabled_by_default": true
+    },
+    {
       "name": "dashboards",
       "label": "Dashboards & Visualizations",
       "description": "Dashboards and indices that enable you to easily visualize important metrics.",
       "enabled_by_default": false
+    },
+    {
+      "name": "dashboards-security-lake",
+      "label": "Dashboards & Visualizations",
+      "description": "Dashboards and indices that enable you to easily visualize important metrics.",
+      "enabled_by_default": true
     }
   ],
   "statics": {
@@ -58,7 +70,7 @@
       "version": "1.0.0",
       "extension": "ndjson",
       "type": "savedObjectBundle",
-      "workflows": ["dashboards"]
+      "workflows": ["dashboards", "dashboards-security-lake"]
     },
     {
       "name": "create_table",
@@ -75,6 +87,13 @@
 
     },
     {
+      "name": "create_mv_security_lake_2_0",
+      "version": "1.0.0",
+      "extension": "sql",
+      "type": "query",
+      "workflows": ["dashboards-security-lake"]
+    },
+    {
       "name": "create_skipping_index",
       "version": "1.0.0",
       "extension": "sql",
@@ -86,7 +105,7 @@
       "version": "1.0.0",
       "extension": "ndjson",
       "type": "savedObjectBundle",
-      "workflows": ["queries"]
+      "workflows": ["queries", "queries-security-lake"]
     }
   ],
   "sampleData": {
